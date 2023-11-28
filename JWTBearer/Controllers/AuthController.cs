@@ -34,6 +34,8 @@ namespace JWTBearer.Controllers
 
             claims.Add(new Claim(ClaimTypes.Email, "Moi@Moi.moi"));
 
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, "12"));
+
             var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddDays(14),signingCredentials: credentials);
 
             return Ok(new JwtSecurityTokenHandler().WriteToken(token));
@@ -43,6 +45,11 @@ namespace JWTBearer.Controllers
         [HttpGet("Test")]
         public IActionResult TestToken()
         {
+            var claim = User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier);
+
+            Console.WriteLine(ClaimTypes.Email);
+
+            Console.WriteLine(Convert.ToInt32(claim.Value) );
             return Ok();
         }
 
